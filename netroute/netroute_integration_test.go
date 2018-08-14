@@ -26,9 +26,9 @@ func TestAddRemoteRoute(t *testing.T) {
 	_, sn, _ := net.ParseCIDR("192.168.111.0/24")
 	addr := net.ParseIP("1.2.3.4")
 	route := Route{
-		LinkIndex: routes[0].LinkIndex,
+		LinkIndex:         routes[0].LinkIndex,
 		DestinationSubnet: sn,
-		GatewayAddress: addr,
+		GatewayAddress:    addr,
 	}
 
 	for _, r := range routes {

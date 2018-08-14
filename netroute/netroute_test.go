@@ -3,8 +3,8 @@ package netroute
 import (
 	"testing"
 
-	"github.com/stretchr/testify/assert"
 	"fmt"
+	"github.com/stretchr/testify/assert"
 )
 
 type fakeResponse struct {
@@ -15,7 +15,7 @@ type fakeResponse struct {
 
 const (
 	GetAllRoutesCommand = "get-netroute -erroraction Ignore"
-	GetRouteStdOut = `
+	GetRouteStdOut      = `
 ifIndex DestinationPrefix                              NextHop                                  RouteMetric ifMetric PolicyStore
 ------- -----------------                              -------                                  ----------- -------- -----------
 13      255.255.255.255/32                             0.0.0.0                                          256 25       ActiveStore
@@ -29,7 +29,7 @@ type fakeShell struct {
 	t               *testing.T
 }
 
-func NewFakeShell(t *testing.T) *fakeShell{
+func NewFakeShell(t *testing.T) *fakeShell {
 	var f fakeShell
 	f.t = t
 	f.RequestMap = make(map[string]fakeResponse)
@@ -60,7 +60,7 @@ func GetAllRoutesTest(t *testing.T) {
 
 	fs := NewFakeShell(t)
 
-	fs.RequestMap[GetAllRoutesCommand] = fakeResponse {
+	fs.RequestMap[GetAllRoutesCommand] = fakeResponse{
 		GetRouteStdOut,
 		"",
 		nil,
@@ -73,7 +73,7 @@ func GetAllRoutesTest(t *testing.T) {
 	routes, err := nr.GetNetRoutesAll()
 
 	assert.Nil(t, err)
-	assert.Equal(t,3, len(routes))
+	assert.Equal(t, 3, len(routes))
 	assert.Equal(t, "192.168.10.0/24", routes[2].DestinationSubnet.String())
 	assert.Equal(t, 12, routes[2].LinkIndex)
 	assert.Equal(t, "10.244.0.1", routes[2].GatewayAddress)
@@ -85,7 +85,7 @@ func GetAllRoutesEmptyTest(t *testing.T) {
 
 	fs := NewFakeShell(t)
 
-	fs.RequestMap["GetAllRoutesCommand"] = fakeResponse {
+	fs.RequestMap["GetAllRoutesCommand"] = fakeResponse{
 		"",
 		"",
 		nil,
@@ -98,5 +98,5 @@ func GetAllRoutesEmptyTest(t *testing.T) {
 	routes, err := nr.GetNetRoutesAll()
 
 	assert.Nil(t, err)
-	assert.Equal(t,0, len(routes))
+	assert.Equal(t, 0, len(routes))
 }
